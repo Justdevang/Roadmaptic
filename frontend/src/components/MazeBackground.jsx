@@ -52,23 +52,9 @@ const generateMaze = (width, height) => {
 
 export const MazeBackground = () => {
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const width = isMobile ? 10 : 20; // Drastically fewer columns on mobile
-  const height = isMobile ? 15 : 25; // Drastically fewer rows on mobile
-  const cellSize = isMobile ? 60 : 50; // Larger cells on mobile to cover space
-
-
-  if (isMobile) {
-    return (
-      <div style={{
-        position: 'fixed',
-        top: 0, left: 0,
-        width: '100vw', height: '100vh',
-        zIndex: -1,
-        backgroundColor: 'var(--bg-primary)',
-        background: 'radial-gradient(circle at 50% 30%, rgba(204, 255, 0, 0.06) 0%, var(--bg-primary) 70%)',
-      }} />
-    );
-  }
+  const width = isMobile ? 6 : 20; // Super low column count for mobile performance
+  const height = isMobile ? 12 : 25; // Super low row count
+  const cellSize = isMobile ? 80 : 50; // Huge cells to cover the screen with fewer DOM nodes
 
   const maze = useMemo(() => generateMaze(width, height), []);
   const mazeHeightPixels = height * cellSize;
@@ -113,6 +99,7 @@ export const MazeBackground = () => {
             top: 0, left: 0,
             width: '100%', height: '100%',
             transformStyle: 'preserve-3d',
+            willChange: 'transform'
           }}
         >
           {/* Render the maze twice for infinite scrolling effect */}
@@ -180,27 +167,31 @@ export const MazeBackground = () => {
         </motion.div>
       </motion.div>
 
-      {/* Vignette Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        background: 'radial-gradient(ellipse at center, transparent 0%, var(--bg-primary) 70%)',
-        pointerEvents: 'none'
-      }} />
+      {/* Vignette Overlay (Hidden on mobile to save GPU composition operations) */}
+      {!isMobile && (
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'radial-gradient(ellipse at center, transparent 0%, var(--bg-primary) 70%)',
+          pointerEvents: 'none'
+        }} />
+      )}
       
-      {/* Top and Bottom gradient fade */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, height: '30vh',
-        background: 'linear-gradient(to bottom, var(--bg-primary), transparent)',
-        pointerEvents: 'none'
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0, height: '30vh',
-        background: 'linear-gradient(to top, var(--bg-primary), transparent)',
-        pointerEvents: 'none'
-      }} />
+      {/* Top and Bottom gradient fade (Hidden on mobile) */}
+      {!isMobile && (
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}>
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, height: '30vh',
+            background: 'linear-gradient(to bottom, var(--bg-primary), transparent)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0, height: '30vh',
+            background: 'linear-gradient(to top, var(--bg-primary), transparent)',
+          }} />
+        </div>
+      )}
     </div>
   );
 };
