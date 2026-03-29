@@ -1,0 +1,197 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BookOpen, Target, Clock, Zap, Video, Youtube, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+export const CreateRoadmap = ({ setRoadmapData }) => {
+  const [role, setRole] = useState('');
+  const [skills, setSkills] = useState('');
+  const [hours, setHours] = useState('10');
+  const [resourcePref, setResourcePref] = useState('mixed');
+  const [includeYouTube, setIncludeYouTube] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleGenerate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/generate-roadmap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          currentSkills: skills, 
+          targetRole: role, 
+          hoursPerWeek: hours,
+          resourcePreference: resourcePref,
+          includeYouTube,
+          language
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.roadmap) {
+        setRoadmapData(data.roadmap);
+        navigate('/roadmap');
+      } else {
+        alert('Failed to generate roadmap: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error connecting to Server. Is the backend running?');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      style={{ maxWidth: '580px', margin: '40px auto 0' }}
+    >
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <div style={{ 
+          background: 'rgba(204, 255, 0, 0.08)', 
+          width: '56px', height: '56px', 
+          borderRadius: '14px', 
+          display: 'flex', alignItems: 'center', justifyContent: 'center', 
+          margin: '0 auto 20px',
+          border: '1px solid rgba(204, 255, 0, 0.2)',
+          boxShadow: '0 4px 20px rgba(204, 255, 0, 0.15)'
+        }}>
+          <Zap size={28} color="var(--accent-primary)" strokeWidth={2.5} />
+        </div>
+        <h2 style={{ fontSize: '30px', marginBottom: '12px', fontWeight: '800' }}>What do you <span className="text-gradient">want to learn?</span></h2>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', maxWidth: '480px', margin: '0 auto' }}>Get a custom, week-by-week learning path generated specifically for your goals and schedule.</p>
+      </div>
+
+      <div className="glass" style={{ padding: '28px', width: '80%', height: '90%', margin: '0 auto' }}>
+        <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Target size={14} /> Target Role / Goal
+            </label>
+            <input 
+              required
+              type="text" 
+              className="input-field" 
+              placeholder="e.g. Full Stack Developer, Data Scientist..." 
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <BookOpen size={14} /> Current Skills
+            </label>
+            <textarea 
+              required
+              className="input-field" 
+              placeholder="e.g. Basic HTML/CSS, some Python, SQL..." 
+              style={{ minHeight: '90px', resize: 'vertical' }}
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: '16px' }}>
+            <div style={{ flex: 1 }}>
+              <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Clock size={14} /> Hours / Week
+              </label>
+              <input 
+                required
+                type="number" 
+                className="input-field" 
+                min="1" 
+                max="100"
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+              />
+            </div>
+            
+            <div style={{ flex: 1 }}>
+              <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Video size={14} /> Preferred Style
+              </label>
+              <select 
+                className="input-field" 
+                value={resourcePref}
+                onChange={(e) => setResourcePref(e.target.value)}
+                style={{ appearance: 'none' }}
+              >
+                <option value="mixed">Mixed (Best Available)</option>
+                <option value="video">Mostly Video Tutorials</option>
+                <option value="docs">Mostly Written Documentation</option>
+              </select>
+            </div>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+            <div style={{ flex: 1 }}>
+              <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Globe size={14} /> Language
+              </label>
+              <select 
+                className="input-field" 
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                style={{ appearance: 'none' }}
+              >
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+              </select>
+            </div>
+
+            <div style={{ flex: 1.5 }}>
+              <div 
+                onClick={() => setIncludeYouTube(!includeYouTube)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 14px',
+                  borderRadius: 'var(--border-radius)',
+                  cursor: 'pointer',
+                  border: `1px solid ${includeYouTube ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.1)'}`,
+                  background: includeYouTube ? 'rgba(204, 255, 0, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+                  transition: 'all 0.2s',
+                  height: '46px'
+                }}
+              >
+                <div style={{
+                  width: '18px', height: '18px',
+                  borderRadius: '4px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: includeYouTube ? 'var(--accent-primary)' : 'transparent',
+                  border: `1px solid ${includeYouTube ? 'var(--accent-primary)' : 'var(--text-muted)'}`
+                }}>
+                  {includeYouTube && <Zap size={12} color="#000" />}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ margin: 0, fontSize: '13.5px', display: 'flex', alignItems: 'center', gap: '6px', color: includeYouTube ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                    <Youtube size={14} color={includeYouTube ? '#ff0000' : 'var(--text-secondary)'} /> Real YouTube Videos
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '14px' }}>
+            {loading ? (
+              <><span className="spinner"></span> <span>Generating Timeline...</span></>
+            ) : (
+              'Generate My Roadmap'
+            )}
+          </button>
+        </form>
+      </div>
+    </motion.div>
+  );
+};
