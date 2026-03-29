@@ -67,12 +67,12 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
         }}>
           <Zap size={28} color="var(--accent-primary)" strokeWidth={2.5} />
         </div>
-        <h1 style={{ fontSize: '32px', marginBottom: '8px', fontWeight: '800', lineHeight: 1.2 }}>Generate your <span className="text-gradient">AI Personalized Learning Roadmap</span></h1>
+        <h1 className="text-smaller-on-mobile" style={{ marginBottom: '8px', fontWeight: '800', lineHeight: 1.2 }}>Generate your <span className="text-gradient">AI Personalized Learning Roadmap</span></h1>
         <h2 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600', color: 'var(--text-primary)' }}>What do you want to learn?</h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', maxWidth: '480px', margin: '0 auto' }}>Get a custom, week-by-week learning path generated specifically for your goals and schedule.</p>
       </div>
 
-      <div className="glass" style={{ padding: '28px', width: '80%', height: '90%', margin: '0 auto' }}>
+      <div className="glass glass-container">
         <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
             <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -102,7 +102,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '16px' }}>
+          <div className="flex-responsive">
             <div style={{ flex: 1 }}>
               <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Clock size={14} /> Hours / Week
@@ -135,7 +135,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
             </div>
           </div>
           
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+          <div className="flex-responsive">
             <div style={{ flex: 1 }}>
               <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Globe size={14} /> Language

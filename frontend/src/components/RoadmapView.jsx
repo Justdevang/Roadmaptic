@@ -57,7 +57,7 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
           <h2 style={{ fontSize: '28px', marginBottom: '6px', fontWeight: '800' }}>Your Learning <span className="text-gradient">Roadmap</span></h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Follow this structured path to achieve your goals.</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div className="action-buttons-wrap" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           {shareLink ? (
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: 'var(--bg-secondary)', padding: '8px 12px', border: '1px solid var(--accent-primary)', borderRadius: 'var(--border-radius)' }}>
               <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{shareLink}</span>
@@ -125,6 +125,7 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
                 return (
                   <div 
                     key={topicId}
+                    className="topic-card"
                     style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -136,7 +137,7 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div className="topic-card-text" style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                       <button 
                         onClick={() => toggleTopic(topicId)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
@@ -162,7 +163,7 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
                       href={topic.resourceUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="btn-secondary"
+                      className="btn-secondary topic-card-action"
                       style={{ padding: '6px 12px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                     >
                       Learn <ExternalLink size={14} />

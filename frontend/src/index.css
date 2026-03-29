@@ -200,3 +200,69 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Responsive Layout Classes */
+.flex-responsive {
+  display: flex;
+  gap: 16px;
+}
+
+.glass-container {
+  padding: 28px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Base Top-level Adjustments */
+.text-smaller-on-mobile {
+  font-size: 32px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .flex-responsive {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .glass-container {
+    width: 100% !important;
+    padding: 20px 16px !important;
+  }
+  
+  .container {
+    padding: 0 16px !important;
+  }
+  
+  .text-smaller-on-mobile {
+    font-size: 26px !important;
+  }
+  
+  .topic-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px;
+  }
+  
+  .topic-card-text {
+    align-items: flex-start !important;
+  }
+
+  .topic-card-action {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  header {
+    padding-bottom: 12px !important;
+    margin-bottom: 24px !important;
+  }
+  
+  .action-buttons-wrap {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+}
