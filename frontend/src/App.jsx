@@ -14,6 +14,7 @@ import { Blog } from './components/Blog';
 import { Article } from './components/Article';
 import { AdPlaceholder } from './components/AdPlaceholder';
 import { CookieBanner } from './components/CookieBanner';
+import { NotFound } from './components/NotFound';
 
 function App() {
   const [roadmapData, setRoadmapData] = useState(() => {
@@ -69,6 +70,7 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:id" element={<Article />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         

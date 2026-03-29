@@ -11,20 +11,22 @@ export const D3Graph = ({ data }) => {
       const nodeHeight = 100;
       const horizontalSpacing = 350;
       const verticalSpacing = 150;
+      const startX = 100;
+      const startY = 150;
       
-      const width = Math.max(800, (data.length + 2) * horizontalSpacing);
-      
-      // Calculate max topics to determine height
       const maxTopics = Math.max(...data.map(w => w.topics.length));
-      const height = Math.max(600, (maxTopics + 2) * verticalSpacing);
+      
+      const contentWidth = startX + (data.length + 1) * horizontalSpacing + 100;
+      const contentHeight = startY + (maxTopics * verticalSpacing) + 100;
       
       d3.select(d3Container.current).selectAll("*").remove();
-      
+
+      // Set width/height to 100% so D3 handles internal zooming instead of native scrollbars
       const svg = d3.select(d3Container.current)
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .style("background", "#000000") // Black background
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("background", "#000000")
         .style("border-radius", "16px");
 
       // Create a grid pattern definition
@@ -60,9 +62,6 @@ export const D3Graph = ({ data }) => {
       // Transform raw data into graph nodes and links
       const nodes = [];
       const links = [];
-      
-      const startX = 100;
-      const startY = 150; // Pin Weeks to the top
       
       // Add start node
       nodes.push({ 
@@ -304,28 +303,41 @@ export const D3Graph = ({ data }) => {
         });
       }
 
-      // Add zoom capability
+      // Add zoom capability with broader limits
       const zoom = d3.zoom()
-        .scaleExtent([0.3, 2])
+        .scaleExtent([0.1, 3])
         .on("zoom", (e) => {
           g.attr("transform", e.transform);
         });
       
       svg.call(zoom);
       
-      // Center the graph initially to show Start and Week 1
-      const initialScale = 0.85;
-      const initialTranslate = [50, 50];
-      svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslate[0], initialTranslate[1]).scale(initialScale));
+      // Smart Auto-Zoom: Calculate the perfect scale to fit the entire roadmap in the container window
+      const containerWidth = d3Container.current.clientWidth || 800;
+      const containerHeight = d3Container.current.clientHeight || 600;
+      
+      const scaleX = containerWidth / contentWidth;
+      const scaleY = containerHeight / contentHeight;
+      
+      // Use 95% of available space so it has a small border
+      let initialScale = Math.min(scaleX, scaleY) * 0.95; 
+      initialScale = Math.min(initialScale, 1.2); // Don't zoom in crazily close if the map is tiny
+      
+      // Center the graph explicitly
+      const xOffset = (containerWidth - (contentWidth * initialScale)) / 2;
+      const yOffset = (containerHeight - (contentHeight * initialScale)) / 2;
+
+      svg.call(zoom.transform, d3.zoomIdentity.translate(xOffset, yOffset).scale(initialScale));
       
     }
   }, [data]);
 
   return (
-    <div style={{ width: '100%', overflowX: 'auto', overflowY: 'hidden', cursor: 'grab' }}>
+    <div style={{ width: '100%', cursor: 'grab' }}>
       <div 
         ref={d3Container} 
-        style={{ width: '100%', height: '600px', backgroundColor: '#000000', borderRadius: '16px', border: '1px solid #27272a', touchAction: 'none' }}
+        className="d3-mobile-wrap"
+        style={{ width: '100%', height: '600px', backgroundColor: '#000000', borderRadius: '16px', border: '1px solid #27272a', touchAction: 'none', overflow: 'hidden' }}
       />
     </div>
   );
