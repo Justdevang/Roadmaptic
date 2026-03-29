@@ -57,6 +57,19 @@ export const MazeBackground = () => {
   const cellSize = isMobile ? 60 : 50; // Larger cells on mobile to cover space
 
 
+  if (isMobile) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100vw', height: '100vh',
+        zIndex: -1,
+        backgroundColor: 'var(--bg-primary)',
+        background: 'radial-gradient(circle at 50% 30%, rgba(204, 255, 0, 0.06) 0%, var(--bg-primary) 70%)',
+      }} />
+    );
+  }
+
   const maze = useMemo(() => generateMaze(width, height), []);
   const mazeHeightPixels = height * cellSize;
 
