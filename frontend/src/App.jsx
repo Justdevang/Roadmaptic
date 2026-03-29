@@ -39,6 +39,14 @@ function App() {
     }
     if(data) {
       localStorage.setItem('learnpath_active_roadmap', JSON.stringify(data));
+      if (params) {
+        try {
+          const history = JSON.parse(localStorage.getItem('learnpath_history') || '[]');
+          const newHistory = history.filter(h => h.params?.targetRole !== params.targetRole);
+          newHistory.unshift({ data, params, timestamp: Date.now() });
+          localStorage.setItem('learnpath_history', JSON.stringify(newHistory.slice(0, 5)));
+        } catch(e) {}
+      }
     }
   };
 

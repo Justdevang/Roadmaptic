@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Target, Clock, Zap, Video, Youtube, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -11,7 +11,15 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
   const [includeYouTube, setIncludeYouTube] = useState(false);
   const [language, setLanguage] = useState('English');
   const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('learnpath_history') || '[]');
+      setHistory(saved);
+    } catch(e) {}
+  }, []);
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -198,6 +206,44 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
         </form>
       </div>
       
+      {history.length > 0 && (
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+          style={{ marginTop: '32px' }}
+        >
+          <h3 style={{ fontSize: '18px', marginBottom: '16px', color: 'var(--text-secondary)', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <Clock size={16} color="var(--accent-primary)" style={{ display: 'inline', marginRight: '6px', verticalAlign: '-3px' }} /> 
+            Recent Roadmaps
+          </h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
+            {history.map((h, i) => (
+              <div 
+                key={i} 
+                className="glass" 
+                style={{ padding: '14px 20px', borderRadius: 'var(--border-radius)', cursor: 'pointer', flex: '1 1 auto', maxWidth: '48%', minWidth: '180px', textAlign: 'center', transition: 'all 0.2s', border: '1px solid var(--border-color)' }}
+                onClick={() => {
+                  setRoadmapData(h.data, h.params);
+                  navigate('/roadmap');
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                  e.currentTarget.style.background = 'rgba(204, 255, 0, 0.08)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                  e.currentTarget.style.background = 'rgba(10, 10, 12, 0.85)';
+                }}
+              >
+                <div style={{ fontWeight: '700', color: 'var(--text-primary)', fontSize: '1rem', marginBottom: '4px' }}>{h.params?.targetRole}</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  <span>{h.params?.hoursPerWeek} hrs/week</span> • <span>{h.params?.language || 'English'}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
       <div style={{ marginTop: '40px', padding: '0 20px', color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6', textAlign: 'center', opacity: 0.7 }}>
         <p>LearnPath is an advanced <strong>AI Personalized Learning Roadmap</strong> generator designed for developers, designers, and tech enthusiasts. Tell us your target career, current skills, and weekly availability, and our system builds a comprehensive, week-by-week curriculum using the best free tutorials, documentation, and real YouTube videos on the internet. Start your structured tech career journey today.</p>
       </div>
