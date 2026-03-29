@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://www.leranpath.qzz.io/sitemap.xml
+Sitemap: https://learnpath-1.onrender.com/sitemap.xml
