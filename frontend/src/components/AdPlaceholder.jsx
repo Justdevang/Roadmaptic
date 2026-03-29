@@ -1,6 +1,9 @@
 import React from 'react';
 
 export const AdPlaceholder = ({ type, style }) => {
+  // Disabled temporarily as requested. Remove this line to re-enable them later.
+  return null;
+
   const adStyles = {
     'sticky-header': { width: '100%', height: '90px', maxWidth: '728px', margin: '0 auto' },
     'mobile-anchor': { width: '100%', height: '50px', position: 'fixed', bottom: 0, left: 0, zIndex: 1000 },
