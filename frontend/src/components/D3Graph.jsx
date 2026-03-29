@@ -312,21 +312,24 @@ export const D3Graph = ({ data }) => {
       
       svg.call(zoom);
       
-      // Smart Auto-Zoom: Calculate the perfect scale to fit the entire roadmap in the container window
+      // Smart Auto-Zoom: Calculate a readable scale rather than a microscopic "Zoom to Fit"
+      const isMobile = window.innerWidth <= 768;
+      // Guarantee a minimum font readability scale (0.65 on mobile is around 10px text, 0.85 on desktop is 12px)
+      const initialScale = isMobile ? 0.65 : 0.85;
+      
       const containerWidth = d3Container.current.clientWidth || 800;
       const containerHeight = d3Container.current.clientHeight || 600;
       
-      const scaleX = containerWidth / contentWidth;
-      const scaleY = containerHeight / contentHeight;
+      // The Start node is pinned at x=100, y=150.
+      // We want to translate the canvas so the start node is visible on the left with a little padding,
+      // and vertically centered in the viewport.
+      const targetScreenX = isMobile ? 20 : (containerWidth * 0.1); // ~20px padding from left edge
+      const xOffset = targetScreenX - (startX * initialScale);
       
-      // Use 95% of available space so it has a small border
-      let initialScale = Math.min(scaleX, scaleY) * 0.95; 
-      initialScale = Math.min(initialScale, 1.2); // Don't zoom in crazily close if the map is tiny
-      
-      // Center the graph explicitly
-      const xOffset = (containerWidth - (contentWidth * initialScale)) / 2;
-      const yOffset = (containerHeight - (contentHeight * initialScale)) / 2;
+      // If mobile height is 350, center is 175.
+      const yOffset = (containerHeight / 2) - (startY * initialScale);
 
+      // Apply
       svg.call(zoom.transform, d3.zoomIdentity.translate(xOffset, yOffset).scale(initialScale));
       
     }
