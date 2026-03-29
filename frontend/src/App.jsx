@@ -65,6 +65,7 @@ function App() {
           <Routes>
             <Route path="/" element={<CreateRoadmap setRoadmapData={handleSetRoadmapData} />} />
             <Route path="/roadmap" element={<RoadmapView roadmapData={roadmapData} originalParams={originalParams} />} />
+            <Route path="/shared/:id" element={<SharedRoadmap />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
