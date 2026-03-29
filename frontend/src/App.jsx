@@ -13,6 +13,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { Blog } from './components/Blog';
 import { Article } from './components/Article';
 import { AdPlaceholder } from './components/AdPlaceholder';
+import { CookieBanner } from './components/CookieBanner';
 
 function App() {
   const [roadmapData, setRoadmapData] = useState(null);
@@ -26,7 +27,7 @@ function App() {
   return (
     <Router>
       <MazeBackground />
-
+      <CookieBanner />
 
       <div className="app-wrapper" style={{ position: 'relative', zIndex: 1, paddingBottom: '60px' }}>
         <header style={{ padding: '12px 0 24px', borderBottom: '1px solid var(--border-color)', marginBottom: '40px' }}>
