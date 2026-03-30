@@ -14,16 +14,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many requests. Please wait 15 minutes and try again.' }
-});
-app.use('/api', limiter);
 // Health Check Endpoint for Diagnostics
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     environment: {
@@ -34,6 +26,15 @@ app.get('/api/health', (req, res) => {
     }
   });
 });
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please wait 15 minutes and try again.' }
+});
+app.use('/api', limiter);
 
 app.post('/api/generate-roadmap', async (req, res) => {
   try {
