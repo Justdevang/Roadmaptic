@@ -46,7 +46,7 @@ Output the response AS PURE JSON in the following format (no markdown formatting
 `;
 
   try {
-    const modelNames = ["gemini-3-flash-preview", "gemini-1.5-flash-latest", "gemini-1.5-flash", "gemini-pro"];
+    const modelNames = ["models/gemini-3.1-flash-live-preview", "models/gemini-3-flash-preview", "models/gemini-flash-latest", "models/gemini-1.5-flash", "models/gemini-pro-latest"];
     let result;
     let lastError;
 
