@@ -29,7 +29,19 @@ export const SharedRoadmap = () => {
   }, [id]);
 
   if (loading) return <div style={{ textAlign: 'center', marginTop: '40px' }}><span className="spinner"></span></div>;
-  if (error) return <div style={{ textAlign: 'center', color: '#ef4444', marginTop: '40px' }}>{error}</div>;
+  if (error) return (
+    <div style={{ textAlign: 'center', marginTop: '80px', padding: '0 20px' }}>
+      <div className="glass" style={{ maxWidth: '450px', margin: '0 auto', padding: '40px 30px', borderTop: '4px solid #ef4444' }}>
+        <h2 style={{ fontSize: '24px', marginBottom: '16px', color: 'var(--text-primary)' }}>Roadmap Not Found</h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: '1.6' }}>
+          {error} The link may be broken, or the roadmap might have been removed.
+        </p>
+        <Link to="/" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
+          Build Your Own Roadmap
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <div>

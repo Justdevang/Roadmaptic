@@ -2,8 +2,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+const searchCache = new Map();
 
 export const searchYouTubeVideo = async (query) => {
+  if (searchCache.has(query)) {
+    return searchCache.get(query);
+  }
+
   if (!YOUTUBE_API_KEY) {
     console.warn("YouTube API Key not found, returning generic search link");
     return {
@@ -19,21 +24,27 @@ export const searchYouTubeVideo = async (query) => {
 
     if (data.items && data.items.length > 0) {
       const video = data.items[0];
-      return {
+      const result = {
         title: video.snippet.title,
         url: `https://www.youtube.com/watch?v=${video.id.videoId}`
       };
+      searchCache.set(query, result);
+      return result;
     } else {
-      return {
+      const result = {
         title: `Search: ${query}`,
         url: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
       };
+      searchCache.set(query, result);
+      return result;
     }
   } catch (error) {
     console.error("Error searching YouTube:", error);
-    return {
+    const result = {
       title: `Search: ${query}`,
       url: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
     };
+    searchCache.set(query, result);
+    return result;
   }
 };

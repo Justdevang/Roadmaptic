@@ -47,7 +47,7 @@ Output the response AS PURE JSON in the following format (no markdown formatting
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-3-flash-preview",
       generationConfig: {
         temperature: 0.2,
         responseMimeType: "application/json",
@@ -57,27 +57,75 @@ Output the response AS PURE JSON in the following format (no markdown formatting
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
+    console.log("Raw Response from Gemini:", responseText); // DEBUG
     
     // Clean up potential markdown formatting from the response
-    const cleanedText = responseText.replace(/```json\n?|\n?```/g, '').trim();
+    let cleanedText = responseText.replace(/```json\n?|\n?```/g, '').trim();
     
-    let parsedData = JSON.parse(cleanedText);
+    // Sometimes the model adds extra text before/after JSON
+    if (cleanedText.indexOf('[') !== -1) {
+      cleanedText = cleanedText.substring(cleanedText.indexOf('['));
+      const lastIndex = cleanedText.lastIndexOf(']');
+      if (lastIndex !== -1) {
+        cleanedText = cleanedText.substring(0, lastIndex + 1);
+      }
+    } else if (cleanedText.indexOf('{') !== -1) {
+      // If it returns an object instead of an array
+      cleanedText = cleanedText.substring(cleanedText.indexOf('{'));
+      const lastIndex = cleanedText.lastIndexOf('}');
+      if (lastIndex !== -1) {
+        cleanedText = cleanedText.substring(0, lastIndex + 1);
+      }
+    }
 
-    // If includeYouTube is true, let's fetch real YouTube links
+    let parsedData;
+    try {
+      parsedData = JSON.parse(cleanedText);
+    } catch (parseError) {
+      console.error("JSON Parsing Error. Cleaned text:", cleanedText);
+      throw new Error("Invalid response format from AI");
+    }
+
+    // If it's an object with a roadmap key, extract it
+    if (!Array.isArray(parsedData) && parsedData.roadmap && Array.isArray(parsedData.roadmap)) {
+      parsedData = parsedData.roadmap;
+    }
+
+    if (!Array.isArray(parsedData)) {
+      console.error("Parsed data is not an array:", parsedData);
+      throw new Error("Roadmap data format is invalid");
+    }
+
+    // If includeYouTube is true, let's fetch real YouTube links in parallel
     if (includeYouTube) {
+      console.log("Fetching YouTube links for topics...");
+      const searchPromises = [];
+      
       for (const week of parsedData) {
-        for (const topic of week.topics) {
-          const query = `${targetRole} ${week.focus} ${topic.name} in ${language} language`;
-          const ytVideo = await searchYouTubeVideo(query);
-          topic.resourceName = `[YouTube] ${ytVideo.title}`;
-          topic.resourceUrl = ytVideo.url;
+        if (week.topics && Array.isArray(week.topics)) {
+          for (const topic of week.topics) {
+            searchPromises.push((async () => {
+              try {
+                const query = `${targetRole} ${week.focus || ''} ${topic.name} roadmap tutorial in ${language}`;
+                const ytVideo = await searchYouTubeVideo(query);
+                topic.resourceName = `[YouTube] ${ytVideo.title}`;
+                topic.resourceUrl = ytVideo.url;
+              } catch (ytErr) {
+                console.warn(`Failed to fetch YouTube link for ${topic.name}:`, ytErr);
+              }
+            })());
+          }
         }
+      }
+      
+      if (searchPromises.length > 0) {
+        await Promise.all(searchPromises);
       }
     }
 
     return parsedData;
   } catch (error) {
     console.error("Error generating roadmap:", error);
-    throw new Error("Failed to generate roadmap from Gemini API");
+    throw error;
   }
 };

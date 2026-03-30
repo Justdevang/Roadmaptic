@@ -1,13 +1,27 @@
 import express from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { generateRoadmap } from './services/geminiService.js';
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please wait 15 minutes and try again.' }
+});
+app.use('/api', limiter);
 
 app.post('/api/generate-roadmap', async (req, res) => {
   try {
@@ -15,6 +29,19 @@ app.post('/api/generate-roadmap', async (req, res) => {
     
     if (!currentSkills || !targetRole || !hoursPerWeek) {
       return res.status(400).json({ error: 'Missing required fields: currentSkills, targetRole, hoursPerWeek' });
+    }
+
+    if (typeof targetRole !== 'string' || targetRole.length > 200) {
+      return res.status(400).json({ error: 'targetRole must be under 200 chars.' });
+    }
+
+    if (typeof currentSkills !== 'string' || currentSkills.length > 500) {
+      return res.status(400).json({ error: 'currentSkills must be under 500 chars.' });
+    }
+
+    const parsedHours = Number(hoursPerWeek);
+    if (isNaN(parsedHours) || parsedHours < 1 || parsedHours > 100) {
+      return res.status(400).json({ error: 'hoursPerWeek must be 1–100.' });
     }
 
     const pref = resourcePreference || "mixed";

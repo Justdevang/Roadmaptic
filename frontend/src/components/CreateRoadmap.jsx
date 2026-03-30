@@ -11,6 +11,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
   const [includeYouTube, setIncludeYouTube] = useState(false);
   const [language, setLanguage] = useState('English');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
   const navigate = useNavigate();
   
@@ -22,11 +23,18 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
   }, []);
 
   const handleGenerate = async (e) => {
-    e.preventDefault();
+    setError('');
     setLoading(true);
     
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      if (!apiUrl) {
+        setError('API not configured.');
+        setLoading(false);
+        return;
+      }
+
       const fetchParams = { 
         currentSkills: skills, 
         targetRole: role, 
@@ -48,11 +56,11 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
         setRoadmapData(data.roadmap, fetchParams);
         navigate('/roadmap');
       } else {
-        alert('Failed to generate roadmap: ' + (data.error || 'Unknown error'));
+        setError('Failed to generate roadmap: ' + (data.error || 'Unknown error'));
       }
     } catch (error) {
       console.error(error);
-      alert('Error connecting to Server. Is the backend running?');
+      setError('Could not connect to server.');
     } finally {
       setLoading(false);
     }
@@ -85,8 +93,9 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
       <div className="glass glass-container">
         <form onSubmit={handleGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
-            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Target size={14} /> Target Role / Goal
+            <label className="input-label" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Target size={14} /> Target Role / Goal</span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{role.length}/200</span>
             </label>
             <input 
               required
@@ -94,13 +103,15 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
               className="input-field" 
               placeholder="e.g. Full Stack Developer, Data Scientist..." 
               value={role}
+              maxLength={200}
               onChange={(e) => setRole(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <BookOpen size={14} /> Current Skills
+            <label className="input-label" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><BookOpen size={14} /> Current Skills</span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{skills.length}/500</span>
             </label>
             <textarea 
               required
@@ -108,6 +119,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
               placeholder="e.g. Basic HTML/CSS, some Python, SQL..." 
               style={{ minHeight: '90px', resize: 'vertical' }}
               value={skills}
+              maxLength={500}
               onChange={(e) => setSkills(e.target.value)}
             />
           </div>
@@ -197,6 +209,20 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
               </div>
             </div>
           </div>
+
+          {error && (
+            <div style={{
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid rgba(239,68,68,0.4)',
+              padding: '12px',
+              color: '#ef4444',
+              borderRadius: 'var(--border-radius)',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              {error}
+            </div>
+          )}
 
           <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '14px' }}>
             {loading ? (

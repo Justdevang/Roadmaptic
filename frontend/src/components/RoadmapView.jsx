@@ -78,6 +78,23 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
       transition={{ duration: 0.4 }}
       style={{ paddingBottom: '60px' }}
     >
+      <button 
+        onClick={() => navigate('/')}
+        style={{
+          background: 'none',
+          border: 'none',
+          color: 'var(--accent-primary)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          marginBottom: '20px',
+          fontSize: '14px',
+          fontWeight: '600'
+        }}
+      >
+        ← Create New Roadmap
+      </button>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h2 style={{ fontSize: '28px', marginBottom: '6px', fontWeight: '800' }}>Your Learning <span className="text-gradient">Roadmap</span></h2>
@@ -97,8 +114,16 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
               Share Publicly
             </button>
           )}
-          <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Save size={16} /> Save to Profile
+          <button 
+            className="btn-primary" 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+            onClick={() => {
+              localStorage.setItem('learnpath_active_roadmap', JSON.stringify(roadmapData));
+              localStorage.setItem('learnpath_active_params', JSON.stringify(originalParams));
+              alert('Saved to browser');
+            }}
+          >
+            <Save size={16} /> Save to Browser
           </button>
         </div>
       </div>
