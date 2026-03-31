@@ -1,4 +1,17 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.learnpath.qzz.io"
+        }
+      ],
+      "destination": "https://learnpath.qzz.io/$1",
+      "statusCode": 301
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/|sitemap\\.xml|robots\\.txt|_redirects|favicon\\.svg|icons\\.svg|assets/).*)",
