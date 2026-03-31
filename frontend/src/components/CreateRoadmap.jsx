@@ -28,13 +28,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
     setLoading(true);
     
     try {
-      const apiUrl = import.meta.env.VITE_API_URL;
-
-      if (!apiUrl) {
-        setError('API not configured.');
-        setLoading(false);
-        return;
-      }
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://learnpath-3en8.onrender.com';
 
       const fetchParams = { 
         currentSkills: skills, 
