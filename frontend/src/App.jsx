@@ -1,20 +1,29 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { CreateRoadmap } from './components/CreateRoadmap';
-import { RoadmapView } from './components/RoadmapView';
-import { SharedRoadmap } from './components/SharedRoadmap';
-import { MazeBackground } from './components/MazeBackground';
 import { Footer } from './components/Footer';
-import { AboutUs } from './components/AboutUs';
-import { ContactUs } from './components/ContactUs';
-import { PrivacyPolicy } from './components/PrivacyPolicy';
-import { Blog } from './components/Blog';
-import { Article } from './components/Article';
-import { AdPlaceholder } from './components/AdPlaceholder';
+import { MazeBackground } from './components/MazeBackground';
 import { CookieBanner } from './components/CookieBanner';
-import { NotFound } from './components/NotFound';
+import { AdPlaceholder } from './components/AdPlaceholder';
+
+// Lazy load non-critical routes for better performance (splitting chunks)
+const RoadmapView = lazy(() => import('./components/RoadmapView').then(m => ({ default: m.RoadmapView })));
+const SharedRoadmap = lazy(() => import('./components/SharedRoadmap').then(m => ({ default: m.SharedRoadmap })));
+const AboutUs = lazy(() => import('./components/AboutUs').then(m => ({ default: m.AboutUs })));
+const ContactUs = lazy(() => import('./components/ContactUs').then(m => ({ default: m.ContactUs })));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
+const Blog = lazy(() => import('./components/Blog').then(m => ({ default: m.Blog })));
+const Article = lazy(() => import('./components/Article').then(m => ({ default: m.Article })));
+const NotFound = lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
+
+// Lightweight loader for Suspense transitions
+const PageLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+    <div className="spinner"></div>
+  </div>
+);
 
 function App() {
   const [roadmapData, setRoadmapData] = useState(() => {
@@ -75,17 +84,19 @@ function App() {
         </header>
         
         <main className="container animate-fade-in">
-          <Routes>
-            <Route path="/" element={<CreateRoadmap setRoadmapData={handleSetRoadmapData} />} />
-            <Route path="/roadmap" element={<RoadmapView roadmapData={roadmapData} originalParams={originalParams} />} />
-            <Route path="/shared/:id" element={<SharedRoadmap />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<Article />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<CreateRoadmap setRoadmapData={handleSetRoadmapData} />} />
+              <Route path="/roadmap" element={<RoadmapView roadmapData={roadmapData} originalParams={originalParams} />} />
+              <Route path="/shared/:id" element={<SharedRoadmap />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<Article />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </main>
         
         <Footer />
