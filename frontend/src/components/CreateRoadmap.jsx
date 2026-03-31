@@ -23,6 +23,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
   }, []);
 
   const handleGenerate = async (e) => {
+    e.preventDefault();
     setError('');
     setLoading(true);
     
