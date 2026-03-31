@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.learnpath.qzz.io/sitemap.xml
+# Specifically allow AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://learnpath.qzz.io/sitemap.xml
