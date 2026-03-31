@@ -17,6 +17,7 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
   });
   const [shareLink, setShareLink] = useState('');
   const [isSharing, setIsSharing] = useState(false);
+  const [shareError, setShareError] = useState('');
   
   useEffect(() => {
     if (completedTopics.length > 0) {
@@ -64,8 +65,9 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
       const id = await saveRoadmapToFirebase(roadmapData, originalParams || { targetRole: 'Custom Roadmap', currentSkills: '', hoursPerWeek: 10 });
       const link = `${window.location.origin}/shared/${id}`;
       setShareLink(link);
+      setShareError('');
     } catch (err) {
-      alert("Failed to share roadmap. Check Firebase config.");
+      setShareError("Failed to share roadmap. Please check your connection.");
     } finally {
       setIsSharing(false);
     }
@@ -114,6 +116,11 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
               Share Publicly
             </button>
           )}
+          {shareError && (
+            <div style={{ color: '#ef4444', fontSize: '12px', background: 'rgba(239,68,68,0.1)', padding: '6px 12px', borderRadius: '4px', border: '1px solid rgba(239,68,68,0.2)' }}>
+              {shareError}
+            </div>
+          )}
           <button 
             className="btn-primary" 
             style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
@@ -135,6 +142,30 @@ export const RoadmapView = ({ roadmapData, originalParams }) => {
       {/* D3 Graph Visualization */}
       <div style={{ marginBottom: '32px' }}>
         <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Path Overview</h3>
+        
+        {/* Mobile-only panning instruction */}
+        <div className="mobile-only-instruction" style={{ 
+          display: 'none', 
+          background: 'rgba(204, 255, 0, 0.05)', 
+          padding: '10px 14px', 
+          borderRadius: '8px', 
+          border: '1px solid var(--border-color)',
+          fontSize: '13px',
+          color: 'var(--accent-primary)',
+          marginBottom: '16px',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{ fontSize: '18px' }}>💡</span> 
+          <span><strong>Tip:</strong> Use two fingers to zoom and drag to pan the roadmap below.</span>
+        </div>
+        
+        <style>{`
+          @media (max-width: 768px) {
+            .mobile-only-instruction { display: flex !important; }
+          }
+        `}</style>
+
         <D3Graph data={roadmapData} />
       </div>
 

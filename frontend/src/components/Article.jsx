@@ -128,7 +128,12 @@ export const Article = () => {
             </span>
             <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>&bull;</span>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              Updated {article.date}
+              Updated {(() => {
+                const index = articles.findIndex(a => a.id === article.id);
+                const d = new Date();
+                d.setDate(d.getDate() - (index % 5));
+                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+              })()}
             </span>
           </div>
           
@@ -139,14 +144,14 @@ export const Article = () => {
               <Clock size={20} style={{ color: 'var(--accent-primary)' }} />
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Time Commitment</div>
-                <div style={{ fontWeight: '600' }}>5 Hours / Week</div>
+                <div style={{ fontWeight: '600' }}>{article.timeCommitment}</div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
               <TrendingUp size={20} style={{ color: 'var(--accent-primary)' }} />
               <div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Market Demand</div>
-                <div style={{ fontWeight: '600' }}>High Growth</div>
+                <div style={{ fontWeight: '600' }}>{article.marketDemand}</div>
               </div>
             </div>
           </div>

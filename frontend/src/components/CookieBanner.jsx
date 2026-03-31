@@ -40,6 +40,21 @@ export const CookieBanner = () => {
     }
   };
 
+  const declineCookies = () => {
+    localStorage.setItem('learnpath_cookie_consent', 'false');
+    setIsVisible(false);
+    
+    // Update consent to denied
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('consent', 'update', {
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied'
+      });
+    }
+  };
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -78,6 +93,9 @@ export const CookieBanner = () => {
                 <Link to="/privacy-policy" className="btn-secondary" onClick={acceptCookies} style={{ textDecoration: 'none', fontSize: '14px', padding: '8px 16px' }}>
                   Learn More
                 </Link>
+                <button className="btn-secondary" onClick={declineCookies} style={{ fontSize: '14px', padding: '8px 16px' }}>
+                  Decline
+                </button>
                 <button className="btn-primary" onClick={acceptCookies} style={{ fontSize: '14px', padding: '8px 24px' }}>
                   Accept & Close
                 </button>
