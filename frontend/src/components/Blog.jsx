@@ -35,12 +35,8 @@ export const Blog = () => {
           </Link>
         ))}
       </div>
-      
-      <div style={{ textAlign: 'center', marginTop: '40px', padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--border-radius)', border: '1px dashed var(--border-color)'}}>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
-          <em>Note: To fully comply with AdSense "Sufficient Content Volume", you should replace these with 15-30 actual high-quality articles (500-1000+ words each).</em>
-        </p>
-      </div>
+
+
     </motion.div>
   );
 };

@@ -7,6 +7,7 @@
   
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
+  --text-muted: #64748b;
   
   --accent-primary: #ccff00; /* Brilliant Lime Green */
   --accent-secondary: #ffea00; /* Sharp Tangy Yellow */
@@ -315,10 +316,10 @@ h1, h2, h3, h4, h5, h6 {
     gap: 8px !important;
   }
   
-  /* Scale down the big UI Icons slightly, but not the D3 graph */
-  svg:not(.d3-mobile-wrap svg) {
-    width: 16px !important;
-    height: 16px !important;
+  /* Scale down icons in input labels only, not globally */
+  .input-label svg {
+    width: 14px !important;
+    height: 14px !important;
   }
   
   /* Fix the specific map loader in D3 component container */
