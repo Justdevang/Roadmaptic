@@ -15,10 +15,12 @@ export const ContactUs = () => {
     setError('');
 
     try {
-      // Note: Replace with your actual Formspree ID if needed
-      const response = await fetch('https://formspree.io/f/mnnjlnyg', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData)
       });
 

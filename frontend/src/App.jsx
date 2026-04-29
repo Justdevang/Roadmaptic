@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useState, lazy, Suspense, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Moon, Sun } from 'lucide-react';
@@ -19,6 +19,7 @@ const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy').then(m => 
 const Blog = lazy(() => import('./components/Blog').then(m => ({ default: m.Blog })));
 const Article = lazy(() => import('./components/Article').then(m => ({ default: m.Article })));
 const NotFound = lazy(() => import('./components/NotFound').then(m => ({ default: m.NotFound })));
+const AuthPage = lazy(() => import('./components/AuthPage').then(m => ({ default: m.AuthPage })));
 
 // Lightweight loader for Suspense transitions
 const PageLoader = () => (
@@ -27,35 +28,30 @@ const PageLoader = () => (
   </div>
 );
 
+// Protected Route Wrapper
+const ProtectedRoute = ({ children }) => {
+  const user = localStorage.getItem('roadmaptic_user');
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
+  }
+
+  return children;
+};
+
 function AppContent() {
   const location = useLocation();
   const canonicalUrl = `https://roadmaptic.qzz.io${location.pathname === '/' ? '' : location.pathname.replace(/\/$/, '')}`;
 
-  // Performance Optimization: Defer Google Tag Manager manually to improve initial load metrics
+  // Track page views on route change manually (in case enhanced measurement is off)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Initialize GTM / GA
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-P3QYHT4N04';
-      document.head.appendChild(script);
-
-      script.onload = () => {
-        window.gtag('js', new Date());
-        window.gtag('config', 'G-P3QYHT4N04');
-
-        // Consent Mode v2 Default
-        window.gtag('consent', 'default', {
-          'ad_storage': 'denied',
-          'ad_user_data': 'denied',
-          'ad_personalization': 'denied',
-          'analytics_storage': 'denied'
-        });
-      };
-    }, 3000); // 3-second delay
-
-    return () => clearTimeout(timer);
-  }, []);
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location]);
 
   const [roadmapData, setRoadmapData] = useState(() => {
     try {
@@ -103,6 +99,9 @@ function AppContent() {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
+  // Check if user is logged in for nav rendering
+  const isLoggedIn = !!localStorage.getItem('roadmaptic_user');
+
   return (
     <>
       <Helmet>
@@ -127,6 +126,13 @@ function AppContent() {
                 <a href="/blog" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>Blog</a>
                 <a href="/about" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>About</a>
                 <a href="/contact" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>Contact</a>
+
+                {/* Show auth links in nav */}
+                {!isLoggedIn ? (
+                  <a href="/auth" style={{ color: 'var(--accent-primary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', transition: 'opacity 0.2s' }} onMouseOver={e => e.target.style.opacity = 0.8} onMouseOut={e => e.target.style.opacity = 1}>Sign In</a>
+                ) : (
+                  <button onClick={() => { localStorage.removeItem('roadmaptic_user'); window.location.reload(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: '500' }}>Sign Out</button>
+                )}
 
                 <button
                   onClick={toggleTheme}
@@ -153,7 +159,12 @@ function AppContent() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/roadmap" element={<RoadmapPage setRoadmapData={handleSetRoadmapData} roadmapData={roadmapData} originalParams={originalParams} />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/roadmap" element={
+                <ProtectedRoute>
+                  <RoadmapPage setRoadmapData={handleSetRoadmapData} roadmapData={roadmapData} originalParams={originalParams} />
+                </ProtectedRoute>
+              } />
               <Route path="/shared/:id" element={<SharedRoadmap />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<ContactUs />} />

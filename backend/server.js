@@ -2,9 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 import { generateRoadmap } from './services/geminiService.js';
+import User from './models/User.js';
+import Contact from './models/Contact.js';
+import Email from './models/Email.js';
+import Roadmap from './models/Roadmap.js';
+import { protect } from './middleware/authMiddleware.js';
 
 dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/learnpath')
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
 const app = express();
 const allowedOrigins = [
@@ -55,7 +66,71 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-app.post('/api/generate-roadmap', async (req, res) => {
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' });
+};
+
+// --- AUTH ROUTES ---
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ error: 'User already exists' });
+
+    const user = await User.create({ name, email, password });
+    if (user) {
+      res.status(201).json({ _id: user._id, name: user.name, email: user.email, token: generateToken(user._id) });
+    } else {
+      res.status(400).json({ error: 'Invalid user data' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      res.json({ _id: user._id, name: user.name, email: user.email, token: generateToken(user._id) });
+    } else {
+      res.status(401).json({ error: 'Invalid email or password' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// --- EMAIL CAPTURE ---
+app.post('/api/subscribe', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email is required' });
+    
+    const existingEmail = await Email.findOne({ email });
+    if (!existingEmail) {
+      await Email.create({ email });
+    }
+    res.status(201).json({ message: 'Subscribed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// --- CONTACT FORM ---
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    await Contact.create({ name, email, message });
+    res.status(201).json({ message: 'Message received' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/generate-roadmap', protect, async (req, res) => {
   try {
     const { currentSkills, targetRole, hoursPerWeek, resourcePreference, includeYouTube, language } = req.body;
     
@@ -78,7 +153,17 @@ app.post('/api/generate-roadmap', async (req, res) => {
 
     const pref = resourcePreference || "mixed";
     const roadmap = await generateRoadmap(currentSkills, targetRole, hoursPerWeek, pref, includeYouTube, language);
-    res.json({ roadmap });
+    
+    // Save to DB
+    const savedRoadmap = await Roadmap.create({
+      user: req.user._id,
+      targetRole,
+      currentSkills,
+      hoursPerWeek: parsedHours,
+      roadmapData: roadmap
+    });
+
+    res.json({ roadmap, id: savedRoadmap._id });
   } catch (error) {
     console.error('API Error:', error);
     res.status(500).json({ 

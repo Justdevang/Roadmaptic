@@ -27,13 +27,32 @@ export const Home = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 5000);
-      setEmail('');
+    if (email && !isSubmitting) {
+      setIsSubmitting(true);
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${apiUrl}/api/subscribe`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email })
+        });
+
+        if (response.ok) {
+          setSubscribed(true);
+          setTimeout(() => setSubscribed(false), 5000);
+          setEmail('');
+        }
+      } catch (error) {
+        console.error("Failed to subscribe:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -330,8 +349,8 @@ export const Home = () => {
                   className="input-field"
                   style={{ flex: '1', minWidth: '200px' }}
                 />
-                <button type="submit" className="btn-primary" style={{ whiteSpace: 'nowrap' }}>
-                  Send it to me
+                <button type="submit" className="btn-primary" disabled={isSubmitting} style={{ whiteSpace: 'nowrap', opacity: isSubmitting ? 0.7 : 1 }}>
+                  {isSubmitting ? 'Sending...' : 'Send it to me'}
                 </button>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'left', marginTop: '8px' }}>

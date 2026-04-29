@@ -28,7 +28,7 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://roadmaptic-3en8.onrender.com';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
       const fetchParams = {
         currentSkills: skills,
@@ -39,9 +39,15 @@ export const CreateRoadmap = ({ setRoadmapData }) => {
         language
       };
 
+      const user = JSON.parse(localStorage.getItem('roadmaptic_user') || '{}');
+      const token = user.token || '';
+
       const response = await fetch(`${apiUrl}/api/generate-roadmap`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(fetchParams),
       });
 
