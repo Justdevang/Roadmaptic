@@ -17,22 +17,31 @@ export const AuthPage = ({ onSuccess }) => {
     try {
       setIsSubmitting(true);
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const fbUser = result.user;
       
-      // Store user data
-      const userData = {
-        _id: user.uid,
-        name: user.displayName,
-        email: user.email,
-        token: await user.getIdToken()
-      };
+      // Sync with backend to get a valid backend token
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const res = await fetch(`${apiUrl}/api/auth/social-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: fbUser.email,
+          name: fbUser.displayName,
+          uid: fbUser.uid
+        })
+      });
       
-      localStorage.setItem('roadmaptic_user', JSON.stringify(userData));
+      const data = await res.json();
       
-      if (onSuccess) {
-        onSuccess();
+      if (res.ok) {
+        localStorage.setItem('roadmaptic_user', JSON.stringify(data));
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          navigate(location.state?.from || '/roadmap');
+        }
       } else {
-        navigate(location.state?.from || '/roadmap');
+        alert(data.error || 'Backend sync failed');
       }
     } catch (err) {
       console.error(err);

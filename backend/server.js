@@ -103,6 +103,33 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+app.post('/api/auth/social-login', async (req, res) => {
+  try {
+    const { email, name, uid } = req.body;
+    
+    // Find user by email or create new one
+    let user = await User.findOne({ email });
+    
+    if (!user) {
+      // Create user without password (social only)
+      user = await User.create({ 
+        name, 
+        email, 
+        password: Math.random().toString(36).slice(-12) // Random password for social users
+      });
+    }
+    
+    res.json({ 
+      _id: user._id, 
+      name: user.name, 
+      email: user.email, 
+      token: generateToken(user._id) 
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // --- EMAIL CAPTURE ---
 app.post('/api/subscribe', async (req, res) => {
   try {
