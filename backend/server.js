@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { generateRoadmap } from './services/geminiService.js';
@@ -10,8 +12,6 @@ import Contact from './models/Contact.js';
 import Email from './models/Email.js';
 import Roadmap from './models/Roadmap.js';
 import { protect } from './middleware/authMiddleware.js';
-
-dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/learnpath')
   .then(() => console.log('MongoDB connected'))

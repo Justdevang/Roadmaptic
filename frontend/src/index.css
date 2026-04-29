@@ -476,9 +476,9 @@ section, .section, .page-container {
 }
 
 .input-field, input {
-  height: 40px !important;
-  padding: 0 14px !important;
-  font-size: 14px !important;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
 }
 
 nav, .nav-bar {
