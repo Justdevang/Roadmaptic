@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: roadmaptic-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: GEMINI_API_KEY
+        sync: false # Set this in the Render Dashboard for security
+      - key: YOUTUBE_API_KEY
+        sync: false # Set this in the Render Dashboard for security
+      - key: MONGODB_URI
+        sync: false # Set this in the Render Dashboard for security
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://roadmaptic.qzz.io
+      - key: NODE_VERSION
+        value: 20.x
