@@ -459,8 +459,7 @@ section, .section, .page-container {
 }
 
 .hero-section {
-  min-height: 100svh !important;
-  padding-top: 0 !important;
+  padding: 60px 0 !important;
 }
 
 .card, .feature-card, .glass {

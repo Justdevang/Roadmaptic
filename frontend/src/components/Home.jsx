@@ -44,7 +44,7 @@ export const Home = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        style={{ textAlign: 'center', flexDirection: 'column', justifyContent: 'center' }}
+        style={{ display: 'flex', alignItems: 'center', textAlign: 'center', flexDirection: 'column', justifyContent: 'center' }}
       >
         <div style={{
           background: 'rgba(59, 130, 246, 0.1)',
@@ -72,12 +72,6 @@ export const Home = () => {
             Generate My Roadmap <ArrowRight size={18} />
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              {[1, 2, 3, 4, 5].map(i => <Star key={i} size={16} color="var(--accent-warning)" fill="var(--accent-warning)" />)}
-            </div>
-            <span>Trusted by 10,000+ developers</span>
-          </div>
         </div>
       </motion.div>
 

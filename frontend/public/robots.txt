@@ -1,17 +1,38 @@
 User-agent: *
 Allow: /
 
-# Specifically allow AI crawlers
-User-agent: GPTBot
+# Specifically allow all AI and search crawlers
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
 Allow: /
 
 User-agent: Claude-Web
 Allow: /
 
-User-agent: CCBot
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Omgilibot
 Allow: /
 
 Sitemap: https://roadmaptic.qzz.io/sitemap.xml
