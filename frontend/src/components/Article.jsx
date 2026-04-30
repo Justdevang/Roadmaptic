@@ -26,11 +26,11 @@ export const Article = () => {
 
   const getArticleImage = () => {
     const images = {
-      'ai-agents': 'https://loremflickr.com/1200/600/ai,robot?lock=300',
-      'quantum-safe': 'https://loremflickr.com/1200/600/security,cyber?lock=301',
-      'rust-edge': 'https://loremflickr.com/1200/600/server,cloud?lock=302'
+      'ai-agents': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200&h=600',
+      'quantum-safe': 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=1200&h=600',
+      'rust-edge': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?auto=format&fit=crop&q=80&w=1200&h=600'
     };
-    return images[id] || 'https://loremflickr.com/1200/600/tech,code?lock=303';
+    return images[id] || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200&h=600';
   };
 
   const articleImage = getArticleImage();

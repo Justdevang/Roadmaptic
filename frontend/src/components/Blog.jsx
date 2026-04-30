@@ -15,9 +15,23 @@ export const Blog = () => {
     });
   };
 
-  const getImage = (index) => `https://loremflickr.com/800/600/tech?lock=${index + 1}`;
-  const heroImage = "https://loremflickr.com/1600/800/technology,learning?lock=100";
-  const ctaImage = "https://loremflickr.com/1600/600/technology,future?lock=101";
+  const getImage = (index) => {
+    const unsplashIds = [
+      '1488590528505-98d2b5aba04b', // Coding/Tech
+      '1517694712202-14dd9538aa97', // Laptop/Code
+      '1498050108023-c5249f4df085', // Dev desk
+      '1555066931-4365d14bab8c', // Programming
+      '1587620962725-abab7fe55159', // Modern code
+      '1516116216624-53e697fedbea', // Software engineering
+      '1504384308090-c89eec243612', // Tech office
+      '1519389950473-47ba0277781c'  // People in tech
+    ];
+    const id = unsplashIds[index % unsplashIds.length];
+    return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=800&h=600`;
+  };
+
+  const heroImage = "https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&q=80&w=1600&h=800";
+  const ctaImage = "https://images.unsplash.com/photo-1451187557450-575637b59240?auto=format&fit=crop&q=80&w=1600&h=600";
 
   // If there are not enough articles, fallback gracefully
   const popularMain = articles[0] || articles[0];
