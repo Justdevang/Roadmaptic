@@ -337,9 +337,8 @@ h6 {
     font-size: 22px !important;
   }
 
-  /* Input & Button Miniaturization */
   .input-field {
-    padding: 8px 12px !important;
+    padding: 8px 12px;
     font-size: 0.85rem !important;
   }
 
@@ -439,7 +438,7 @@ p, .body-copy {
 }
 
 nav, .nav-links {
-  gap: 28px !important;
+  gap: 20px;
 }
 
 button, .btn-primary, .btn-secondary, .btn-ghost {
@@ -495,4 +494,110 @@ nav, .nav-bar {
 .testimonial-avatar {
   width: 36px !important;
   height: 36px !important;
+}
+
+/* Header & Nav */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.main-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.main-nav a:hover {
+  color: var(--accent-primary);
+}
+
+.main-nav .auth-link {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.main-nav .sign-out-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+/* Input Icon Fixes */
+.input-with-icon-container {
+  position: relative;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  opacity: 0.6;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.input-field-with-icon {
+  padding-left: 48px !important;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .main-nav {
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .main-nav a {
+    font-size: 0.8rem !important;
+  }
+
+  .logo {
+    font-size: 18px !important;
+    white-space: nowrap;
+  }
+
+  header {
+    padding: 12px 0 !important;
+  }
+  
+  .input-field-with-icon {
+    padding-left: 44px !important;
+  }
+  
+  .input-icon-left {
+    left: 12px;
+  }
 }

@@ -189,8 +189,8 @@ export const AuthPage = ({ onSuccess }) => {
                 transition={{ duration: 0.3 }}
               >
                 <label htmlFor="name" className="input-label" style={{ fontSize: '0.75rem', marginBottom: '8px', opacity: 0.8 }}>Full Name</label>
-                <div style={{ position: 'relative', marginBottom: '4px' }}>
-                  <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', opacity: 0.6, zIndex: 1 }}>
+                <div className="input-with-icon-container" style={{ marginBottom: '4px' }}>
+                  <div className="input-icon-left">
                     <User size={18} />
                   </div>
                   <input
@@ -198,11 +198,11 @@ export const AuthPage = ({ onSuccess }) => {
                     id="name"
                     type="text"
                     name="name"
-                    className="input-field"
+                    className="input-field input-field-with-icon"
                     placeholder="e.g. James Wilson"
                     value={formData.name}
                     onChange={handleChange}
-                    style={{ paddingLeft: '52px', height: '52px', fontSize: '0.95rem' }}
+                    style={{ height: '52px', fontSize: '0.95rem' }}
                   />
                 </div>
               </motion.div>
@@ -211,8 +211,8 @@ export const AuthPage = ({ onSuccess }) => {
 
           <div style={{ marginTop: isLogin ? '0' : '4px' }}>
             <label htmlFor="email" className="input-label" style={{ fontSize: '0.75rem', marginBottom: '8px', opacity: 0.8 }}>Email Address</label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', opacity: 0.6, zIndex: 1 }}>
+            <div className="input-with-icon-container">
+              <div className="input-icon-left">
                 <Mail size={18} />
               </div>
               <input
@@ -220,11 +220,11 @@ export const AuthPage = ({ onSuccess }) => {
                 id="email"
                 type="email"
                 name="email"
-                className="input-field"
+                className="input-field input-field-with-icon"
                 placeholder="james@company.com"
                 value={formData.email}
                 onChange={handleChange}
-                style={{ paddingLeft: '52px', height: '52px', fontSize: '0.95rem' }}
+                style={{ height: '52px', fontSize: '0.95rem' }}
               />
             </div>
           </div>
@@ -238,8 +238,8 @@ export const AuthPage = ({ onSuccess }) => {
                 </button>
               )}
             </div>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', opacity: 0.6, zIndex: 1 }}>
+            <div className="input-with-icon-container">
+              <div className="input-icon-left">
                 <Lock size={18} />
               </div>
               <input
@@ -247,11 +247,11 @@ export const AuthPage = ({ onSuccess }) => {
                 id="password"
                 type="password"
                 name="password"
-                className="input-field"
+                className="input-field input-field-with-icon"
                 placeholder="Minimum 6 characters"
                 value={formData.password}
                 onChange={handleChange}
-                style={{ paddingLeft: '52px', height: '52px', fontSize: '0.95rem' }}
+                style={{ height: '52px', fontSize: '0.95rem' }}
                 minLength={6}
               />
             </div>

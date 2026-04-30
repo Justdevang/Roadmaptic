@@ -118,34 +118,25 @@ function AppContent() {
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
               <AdPlaceholder type="sticky-header" />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div className="text-gradient" onClick={() => window.location.href = '/'} style={{ margin: 0, fontSize: '24px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <div className="header-content">
+              <div className="logo text-gradient" onClick={() => window.location.href = '/'} style={{ margin: 0, fontSize: '24px', cursor: 'pointer', fontWeight: 'bold' }}>
                 Roadmaptic
               </div>
-              <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <a href="/blog" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>Blog</a>
-                <a href="/about" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>About</a>
-                <a href="/contact" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = 'var(--accent-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-secondary)'}>Contact</a>
+              <nav className="main-nav">
+                <a href="/blog">Blog</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
 
                 {/* Show auth links in nav */}
                 {!isLoggedIn ? (
-                  <a href="/auth" style={{ color: 'var(--accent-primary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', transition: 'opacity 0.2s' }} onMouseOver={e => e.target.style.opacity = 0.8} onMouseOut={e => e.target.style.opacity = 1}>Sign In</a>
+                  <a href="/auth" className="auth-link">Sign In</a>
                 ) : (
-                  <button onClick={() => { localStorage.removeItem('roadmaptic_user'); window.location.reload(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: '500' }}>Sign Out</button>
+                  <button className="sign-out-btn" onClick={() => { localStorage.removeItem('roadmaptic_user'); window.location.reload(); }}>Sign Out</button>
                 )}
 
                 <button
+                  className="theme-toggle"
                   onClick={toggleTheme}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: 'var(--text-secondary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '4px'
-                  }}
                   title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
                 >
                   {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
