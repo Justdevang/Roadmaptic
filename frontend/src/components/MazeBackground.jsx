@@ -52,9 +52,25 @@ const generateMaze = (width, height) => {
 
 export const MazeBackground = () => {
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const width = isMobile ? 12 : 20; 
-  const height = isMobile ? 20 : 25; 
-  const cellSize = isMobile ? 45 : 50; 
+
+  // Skip rendering entirely on mobile — the animated 3D maze is too heavy
+  // and is the primary cause of poor LCP/TTI on mobile devices.
+  if (isMobile) {
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: -1,
+        backgroundColor: 'var(--bg-primary)',
+      }} />
+    );
+  }
+
+  const width = 20;
+  const height = 25;
+  const cellSize = 50;
 
   const maze = useMemo(() => generateMaze(width, height), [width, height]);
   const mazeHeightPixels = height * cellSize;
@@ -69,31 +85,29 @@ export const MazeBackground = () => {
       zIndex: -1,
       overflow: 'hidden',
       backgroundColor: 'var(--bg-primary)',
-      perspective: isMobile ? '800px' : '1200px'
+      perspective: '1200px'
     }}>
       {/* 3D Rotated Container */}
       <motion.div
-        animate={isMobile ? {} : { 
-          rotateZ: [0, 2, 0, -2, 0], // Gentle swaying only on desktop
-        }}
+        animate={{ rotateZ: [0, 2, 0, -2, 0] }}
         transition={{ repeat: Infinity, duration: 15, ease: 'easeInOut' }}
         style={{
           position: 'absolute',
-          top: isMobile ? '45%' : '40%',
+          top: '40%',
           left: '50%',
           width: `${width * cellSize}px`,
           height: `${mazeHeightPixels * 2}px`,
           marginLeft: `-${(width * cellSize) / 2}px`,
           marginTop: `-${mazeHeightPixels}px`,
           transformStyle: 'preserve-3d',
-          transform: isMobile ? 'rotateX(45deg)' : 'rotateX(55deg)',
+          transform: 'rotateX(55deg)',
         }}
       >
         <motion.div
           animate={{
             y: [0, -mazeHeightPixels],
           }}
-          transition={{ repeat: Infinity, duration: isMobile ? 18 : 12, ease: 'linear' }}
+          transition={{ repeat: Infinity, duration: 12, ease: 'linear' }}
           style={{
             position: 'absolute',
             top: 0, left: 0,
@@ -116,7 +130,7 @@ export const MazeBackground = () => {
               transformStyle: 'preserve-3d',
             }}>
               {maze.map((row, y) => row.map((cell, x) => {
-                const borderStyle = `1px solid rgba(59, 130, 246, ${isMobile ? '0.15' : '0.25'})`; 
+                const borderStyle = `1px solid rgba(59, 130, 246, 0.25)`;
                 const faintBorder = '1px solid rgba(255, 255, 255, 0.02)';
                 
                 return (
@@ -140,11 +154,11 @@ export const MazeBackground = () => {
           <motion.div
             animate={{
               y: [0, mazeHeightPixels],
-              x: [0, cellSize * (isMobile ? 1.5 : 2), -cellSize * (isMobile ? 1.5 : 2), cellSize, 0],
+              x: [0, cellSize * 2, -cellSize * 2, cellSize, 0],
               scale: [1, 1.2, 1],
             }}
-            transition={{ 
-              y: { repeat: Infinity, duration: isMobile ? 18 : 12, ease: 'linear' },
+            transition={{
+              y: { repeat: Infinity, duration: 12, ease: 'linear' },
               x: { repeat: Infinity, duration: 8, ease: 'easeInOut' },
               scale: { repeat: Infinity, duration: 0.5, ease: 'easeInOut' }
             }}
@@ -166,26 +180,24 @@ export const MazeBackground = () => {
         </motion.div>
       </motion.div>
 
-      {/* Vignette Overlay (Now optimized and active on mobile) */}
+      {/* Vignette Overlay */}
       <div style={{
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
-        background: isMobile 
-          ? 'radial-gradient(circle at center, transparent 30%, var(--bg-primary) 100%)'
-          : 'radial-gradient(ellipse at center, transparent 0%, var(--bg-primary) 70%)',
+        background: 'radial-gradient(ellipse at center, transparent 0%, var(--bg-primary) 70%)',
         pointerEvents: 'none'
       }} />
-      
+
       {/* Top and Bottom gradient fade */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}>
         <div style={{
           position: 'absolute',
-          top: 0, left: 0, right: 0, height: isMobile ? '25vh' : '30vh',
+          top: 0, left: 0, right: 0, height: '30vh',
           background: 'linear-gradient(to bottom, var(--bg-primary), transparent)',
         }} />
         <div style={{
           position: 'absolute',
-          bottom: 0, left: 0, right: 0, height: isMobile ? '25vh' : '30vh',
+          bottom: 0, left: 0, right: 0, height: '30vh',
           background: 'linear-gradient(to top, var(--bg-primary), transparent)',
         }} />
       </div>

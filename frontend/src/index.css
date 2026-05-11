@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap&font-display=swap');
+/* Fonts loaded non-blocking via index.html preload */
 
 :root {
   /* LIGHT MODE (Default) */
@@ -598,5 +598,25 @@ nav, .nav-bar {
   
   .input-icon-left {
     left: 12px;
+  }
+}
+
+/* Performance: skip rendering off-screen content until needed */
+footer,
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 200px;
+}
+
+/* Ensure LCP element (H1) is painted immediately without layout shift */
+.hero-section h1 {
+  font-display: swap;
+}
+
+/* Mobile-specific: reduce motion for users who prefer it + perf */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

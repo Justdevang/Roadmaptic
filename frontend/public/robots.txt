@@ -1,7 +1,40 @@
+# robots.txt for roadmaptic.qzz.io
+# https://www.robotstxt.org/
+
 User-agent: *
 Allow: /
 
-# Specifically allow all AI and search crawlers
+# Block non-public routes from indexing
+Disallow: /roadmap
+Disallow: /auth
+Disallow: /shared/
+Disallow: /api/
+
+# Crawl-delay for well-behaved bots (not Googlebot — it ignores this)
+Crawl-delay: 10
+
+# Allow all major search engines explicitly
+User-agent: Googlebot
+Allow: /
+Disallow: /roadmap
+Disallow: /auth
+Disallow: /shared/
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /roadmap
+Disallow: /auth
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Allow AI crawlers
 User-agent: ClaudeBot
 Allow: /
 
@@ -32,7 +65,5 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-User-agent: Omgilibot
-Allow: /
-
+# Sitemap location
 Sitemap: https://roadmaptic.qzz.io/sitemap.xml

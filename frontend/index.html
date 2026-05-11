@@ -40,7 +40,7 @@
     }
   </script>
 
-  <!-- Google tag (gtag.js) — data-cfasync="false" prevents Cloudflare Rocket Loader from delaying these -->
+  <!-- Google Analytics: consent setup inline, script deferred until after load -->
   <script data-cfasync="false">
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
@@ -50,13 +50,16 @@
       'ad_personalization': 'denied',
       'analytics_storage': 'denied'
     });
-  </script>
-  <script async data-cfasync="false" src="https://www.googletagmanager.com/gtag/js?id=G-YLPGY8QFW6"></script>
-  <script data-cfasync="false">
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-YLPGY8QFW6');
+    // Defer GTM load until after page is interactive to avoid blocking LCP
+    window.addEventListener('load', function() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.setAttribute('data-cfasync','false');
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-YLPGY8QFW6';
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', 'G-YLPGY8QFW6');
+    });
   </script>
 
   <!-- Preconnects for performance -->
@@ -64,9 +67,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
   <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-  <!-- Single font import with display=swap to prevent render-blocking -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
-    rel="stylesheet" />
+  <!-- Non-render-blocking font loading: preload trick -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" />
+  </noscript>
 
 
 
