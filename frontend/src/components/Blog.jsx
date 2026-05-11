@@ -49,6 +49,31 @@ export const Blog = () => {
       <Helmet>
         <title>Roadmaptic Blog | Expert Guides, Tutorials & Career Insights</title>
         <meta name="description" content="Explore our library of technology-focused articles, career advice, and deep dives into AI, development, and business skills." />
+        <link rel="canonical" href="https://roadmaptic.qzz.io/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Roadmaptic" />
+        <meta property="og:title" content="Roadmaptic Blog | Expert Guides, Tutorials & Career Insights" />
+        <meta property="og:description" content="Explore our library of technology-focused articles, career advice, and deep dives into AI, development, and business skills." />
+        <meta property="og:url" content="https://roadmaptic.qzz.io/blog" />
+        <meta property="og:image" content="https://roadmaptic.qzz.io/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Roadmaptic Blog | Expert Guides, Tutorials & Career Insights" />
+        <meta name="twitter:description" content="Explore our library of technology-focused articles, career advice, and deep dives into AI, development, and business skills." />
+        <meta name="twitter:image" content="https://roadmaptic.qzz.io/og-image.png" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "Roadmaptic Blog",
+            "url": "https://roadmaptic.qzz.io/blog",
+            "description": "Expert guides, tutorials and career insights for developers",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Roadmaptic",
+              "url": "https://roadmaptic.qzz.io/"
+            }
+          })}
+        </script>
       </Helmet>
 
       {/* 1. Hero Section */}

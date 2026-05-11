@@ -62,15 +62,15 @@ export const Home = () => {
         <title>Roadmaptic – Free AI Coding Bootcamp Generator | 12-Week Learning Roadmaps</title>
         <meta name="description" content="Get your free personalized 12-week coding roadmap in 30 seconds. AI-powered learning paths for Web Dev, Python, Data Science & ML. Tailored to your skills & schedule. No signup needed." />
         <meta name="keywords" content="free coding bootcamp, AI learning roadmap, 12 week coding plan, personalized coding curriculum, learn python free, data science roadmap, web development roadmap, machine learning path, coding for beginners" />
-        <link rel="canonical" href="https://learnpath.qzz.io/" />
+        <link rel="canonical" href="https://roadmaptic.qzz.io/" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Roadmaptic" />
         <meta property="og:title" content="Roadmaptic – Free AI Coding Bootcamp Generator | 12-Week Learning Roadmaps" />
         <meta property="og:description" content="Get your free personalized 12-week coding roadmap in 30 seconds. AI-powered learning paths for Web Dev, Python, Data Science & ML. Tailored to your skills & schedule. No signup needed." />
-        <meta property="og:url" content="https://learnpath.qzz.io/" />
-        <meta property="og:image" content="https://learnpath.qzz.io/og-image.png" />
+        <meta property="og:url" content="https://roadmaptic.qzz.io/" />
+        <meta property="og:image" content="https://roadmaptic.qzz.io/og-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
@@ -78,7 +78,7 @@ export const Home = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Roadmaptic – Free AI Coding Bootcamp Generator | 12-Week Learning Roadmaps" />
         <meta name="twitter:description" content="Get your free personalized 12-week coding roadmap in 30 seconds. AI-powered learning paths for Web Dev, Python, Data Science & ML. Tailored to your skills & schedule. No signup needed." />
-        <meta name="twitter:image" content="https://learnpath.qzz.io/og-image.png" />
+        <meta name="twitter:image" content="https://roadmaptic.qzz.io/og-image.png" />
 
         {/* Structured Data */}
         <script type="application/ld+json">
@@ -86,11 +86,11 @@ export const Home = () => {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "Roadmaptic",
-            "url": "https://learnpath.qzz.io/",
+            "url": "https://roadmaptic.qzz.io/",
             "description": "Free AI-powered personalized 12-week coding roadmap generator",
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://learnpath.qzz.io/?q={search_term_string}",
+              "target": "https://roadmaptic.qzz.io/?q={search_term_string}",
               "query-input": "required name=search_term_string"
             }
           })}

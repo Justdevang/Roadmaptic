@@ -110,8 +110,30 @@ export const Article = () => {
         <title>{article.title} | Roadmaptic</title>
         <meta name="description" content={article.metaDescription} />
         <meta name="keywords" content={`${article.skillName}, tutorial, guide, career roadmap, learn ${article.skillName}, developer skills`} />
+        <link rel="canonical" href={`https://roadmaptic.qzz.io/blog/${article.id}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Roadmaptic" />
+        <meta property="og:title" content={`${article.title} | Roadmaptic`} />
+        <meta property="og:description" content={article.metaDescription} />
+        <meta property="og:url" content={`https://roadmaptic.qzz.io/blog/${article.id}`} />
+        <meta property="og:image" content="https://roadmaptic.qzz.io/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${article.title} | Roadmaptic`} />
+        <meta name="twitter:description" content={article.metaDescription} />
+        <meta name="twitter:image" content="https://roadmaptic.qzz.io/og-image.png" />
         <script type="application/ld+json">
           {JSON.stringify(article.schema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://roadmaptic.qzz.io/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://roadmaptic.qzz.io/blog" },
+              { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://roadmaptic.qzz.io/blog/${article.id}` }
+            ]
+          })}
         </script>
       </Helmet>
 

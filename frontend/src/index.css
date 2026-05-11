@@ -289,7 +289,7 @@ h6 {
   .glass {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: rgba(10, 10, 12, 0.95);
+    background: var(--bg-secondary);
   }
 
 
