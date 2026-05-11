@@ -174,6 +174,7 @@ export const Home = () => {
 
       {/* Feature Hooks */}
       <div style={{ maxWidth: '1000px', margin: '0 auto 60px', padding: '0 20px' }}>
+        <h2 className="sr-only">Key Features</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
           <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass" style={{ padding: '24px 20px', textAlign: 'center' }}>
             <Map size={24} color="var(--accent-primary)" style={{ margin: '0 auto 12px' }} />

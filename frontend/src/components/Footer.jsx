@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
-    <footer style={{ marginTop: '60px', padding: '40px 0', borderTop: '1px solid var(--border-color)', background: 'var(--bg-secondary)' }}>
+    <footer style={{ marginTop: '60px', padding: '40px 0', borderTop: '1px solid var(--border-color)', background: 'var(--bg-secondary)', minHeight: '200px', contain: 'layout' }}>
       <div className="container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '20px' }}>
         <div style={{ maxWidth: '300px' }}>
           <h3 className="text-gradient" style={{ fontSize: '1.2rem', marginBottom: '10px' }}>Roadmaptic</h3>

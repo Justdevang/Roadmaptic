@@ -40,12 +40,10 @@
     }
   </script>
 
-  <!-- Google tag (gtag.js) -->
-  <script>
+  <!-- Google tag (gtag.js) — data-cfasync="false" prevents Cloudflare Rocket Loader from delaying these -->
+  <script data-cfasync="false">
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-
-    // Set default consent to 'denied' as a placeholder
     gtag('consent', 'default', {
       'ad_storage': 'denied',
       'ad_user_data': 'denied',
@@ -53,18 +51,21 @@
       'analytics_storage': 'denied'
     });
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YLPGY8QFW6"></script>
-  <script>
+  <script async data-cfasync="false" src="https://www.googletagmanager.com/gtag/js?id=G-YLPGY8QFW6"></script>
+  <script data-cfasync="false">
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-YLPGY8QFW6');
   </script>
 
+  <!-- Preconnects for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;700&display=swap"
+  <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <!-- Single font import with display=swap to prevent render-blocking -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
     rel="stylesheet" />
 
 

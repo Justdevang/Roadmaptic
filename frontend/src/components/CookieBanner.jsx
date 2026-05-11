@@ -66,10 +66,10 @@ export const CookieBanner = () => {
           style={{
             position: 'fixed',
             bottom: '24px',
-            left: '24px',
-            right: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 'calc(100% - 48px)',
             maxWidth: '600px',
-            margin: '0 auto',
             zIndex: 9999,
           }}
           className="glass"
@@ -91,7 +91,7 @@ export const CookieBanner = () => {
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
                 <Link to="/privacy-policy" className="btn-secondary" onClick={acceptCookies} style={{ textDecoration: 'none', fontSize: '14px', padding: '8px 16px' }}>
-                  Learn More
+                  Privacy Policy
                 </Link>
                 <button className="btn-secondary" onClick={declineCookies} style={{ fontSize: '14px', padding: '8px 16px' }}>
                   Decline

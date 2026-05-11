@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e \"const p = require\\('puppeteer'\\); console.log\\(p.version || 'ok'\\)\")"
+      "Bash(node -e \"const p = require\\('puppeteer'\\); console.log\\(p.version || 'ok'\\)\")",
+      "Bash(curl -s \"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://roadmaptic.qzz.io&strategy=desktop\" -o /tmp/psi_desktop.json)",
+      "Bash(curl -s \"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://roadmaptic.qzz.io&strategy=mobile\" -o /tmp/psi_mobile.json)",
+      "Bash(wait)",
+      "Bash(python3 -c ':*)"
     ]
   }
 }

@@ -1,0 +1,24 @@
+# Roadmaptic
+
+> AI-powered personalized learning roadmap generator. Get a free custom 12-week coding plan in 30 seconds based on your skills, target role, and weekly availability.
+
+## Pages
+
+- [Home](https://roadmaptic.qzz.io/): Generate your free personalized 12-week coding roadmap
+- [Blog](https://roadmaptic.qzz.io/blog): Expert guides, tutorials and career insights
+- [Glossary](https://roadmaptic.qzz.io/glossary): 1,500+ technical definitions for developers
+- [About](https://roadmaptic.qzz.io/about): About Roadmaptic
+- [Contact](https://roadmaptic.qzz.io/contact): Contact Roadmaptic
+
+## Blog Articles
+
+- [AI Agentic Workflows](https://roadmaptic.qzz.io/blog/ai-agents): Mastering AI Agentic Workflows - the 2026 Developer Gold Mine
+- [Quantum-Safe Engineering](https://roadmaptic.qzz.io/blog/quantum-safe): Quantum-Safe Frontend Engineering: Protecting the 2026 Web
+- [Rust for Edge Computing](https://roadmaptic.qzz.io/blog/rust-edge): Rust for Edge Computing: High-Performance Infrastructure in 2026
+- [AI Ethics & Governance](https://roadmaptic.qzz.io/blog/ai-ethics): AI Ethics & Governance: The Most Important Non-Tech Skill of 2026
+- [ESG Sustainability](https://roadmaptic.qzz.io/blog/esg-sustainability): Sustainable Supply Chain & ESG Auditing in the Digital Age
+- [BCI UX Design](https://roadmaptic.qzz.io/blog/bci-ux): Designing for the Brain: Neuro-Interface UX Careers
+- [Climate Resilience](https://roadmaptic.qzz.io/blog/climate-resilience): Climate Resilience Engineering: Infrastructure for a Changing World
+- [Decentralized Identity](https://roadmaptic.qzz.io/blog/did-web5): Decentralized Identity (DID) & ZK-Proofs: The End of Passwords
+- [Neuro-Symbolic AI](https://roadmaptic.qzz.io/blog/neuro-symbolic): Neuro-Symbolic AI: The Future of Explainable Reasoning
+- [Bio-Informatics](https://roadmaptic.qzz.io/blog/bio-informatics): Bio-Informatics Data Engineering: Coding for the Genomic Age
