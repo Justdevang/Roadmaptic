@@ -36,7 +36,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-  <!-- Blog Articles -->
   <url>
     <loc>https://roadmaptic.qzz.io/blog/ai-agents</loc>
     <lastmod>2026-05-12</lastmod>
@@ -97,7 +96,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Glossary Term Pages -->
   <url>
     <loc>https://roadmaptic.qzz.io/glossary/microservices</loc>
     <lastmod>2026-05-12</lastmod>
